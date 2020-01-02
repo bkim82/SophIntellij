@@ -13,4 +13,6 @@ public abstract class OperatorToken extends Token {
     }
 
     public abstract double eval (double a, double b);
+
+    public abstract int getPrecedence();
 }

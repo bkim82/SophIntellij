@@ -1,3 +1,4 @@
+package Token;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -5,13 +6,13 @@ import java.util.*;
 
 public class Lab4_1_ParenChecker {
 
-    public static int pos = 1;
-    public static int line1 = 1;
+
 
     public static void main(String[] args) {
         String[] files = {"data/lab4_1/invalid1.in", "data/lab4_1/invalid2.in", "data/lab4_1/invalid3.in",
                 "data/lab4_1/invalid4.in", "data/lab4_1/invalid5.in",
                 "data/lab4_1/valid1.in", "data/lab4_1/valid2.in"};
+
 
         for (String filename : files) {
             System.out.println("\nTesting file: " + filename);
@@ -32,6 +33,10 @@ public class Lab4_1_ParenChecker {
         ArrayList<Character> closeSymbols = new ArrayList<>(Arrays.asList(']', '}', ')'));
         Stack<Character> stack = new Stack<>();
 
+        int line1 = 1;
+        int pos = 1;
+
+
         //
         // Declare any other variables you need here.
         //
@@ -41,10 +46,8 @@ public class Lab4_1_ParenChecker {
             String line = in.nextLine();
             char[] array = line.toCharArray();
 
+
             for (int i = 0; i < array.length; i++) {
-
-
-
 
                 if (openSymbols.contains(array[i])) {
                     int a = openSymbols.indexOf(array[i]);
@@ -54,7 +57,7 @@ public class Lab4_1_ParenChecker {
                 if (closeSymbols.contains(array[i])) {
                     if (stack.isEmpty()) {
                         throw new InputMismatchException("On line " + line1 + " at pos " + pos + " found '" + array[i] + "' there" +
-                                " is no matching opening8 symbol.");
+                                " is no matching opening symbol.");
                     }
                     if (stack.peek().equals(array[i])) {
                         stack.pop();

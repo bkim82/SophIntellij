@@ -1,10 +1,12 @@
 package Token;
 
+import java.util.*;
 import java.util.NoSuchElementException;
 
 public class Tokenizer {
     private char[] tokenStr = null;
     private int pos = 0;
+    ArrayList<Character> operators = new ArrayList<>(Arrays.asList('+', '-', '*', '/'));
 
     public Tokenizer(String str) {
         tokenStr = str.toCharArray();
@@ -39,38 +41,48 @@ public class Tokenizer {
         else if (c == '-') {
             return new OpSubToken();
         }
-        else if (c == '/') {
-            return new OpDivToken();
-        }
         else if (c == '*') {
             return new OpMultToken();
         }
-        else {
-           throw new InvalidExpressionException("Found " + c + " expecting an operator " + pos + ".");
+        else if (c == '/') {
+            return new OpDivToken();
         }
-
+        else
+            throw new InvalidExpressionException("Found " + c +
+                    " expecting an operator at position " + pos + ".");
 
     }
 
     public boolean hasMoreTokens() {
         skipSpaces();
         return (pos < tokenStr.length);
-
     }
 
-    /** Returns next token in string.  If no more tokens,
-     * throws a NoSuchElementException.
-     */
     public Token nextToken() throws InvalidExpressionException {
         skipSpaces();
-
         if (pos >= tokenStr.length) {
-            throw new NoSuchElementException("No more tokens remaining");
+            throw new NoSuchElementException("No more tokens remaining.");
         }
-        else if (Character.isDigit(tokenStr[pos])) {
+
+        if (Character.isDigit(tokenStr[pos])) {
             return readNumberToken();
         }
-        else
+        else if (operators.contains(tokenStr[pos])){
             return readOperatorToken();
+        }
+        else {
+            char type = tokenStr[pos];
+            pos++;
+
+            if (type == '(') {
+                return new LeftParenToken();
+            }
+            else if (type == ')') {
+                return new RightParenToken();
+            }
+            else {
+                throw new InvalidExpressionException();
+            }
+        }
     }
 }
