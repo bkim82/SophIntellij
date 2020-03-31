@@ -8,8 +8,27 @@ import java.util.Scanner;
 public class AnagramFinder {
 
   public static List<String> getAnagrams(String word, LookupList dict){
-    // TODO
-    return new ArrayList<String>();
+    ArrayList<String> words = new ArrayList<String>();
+    getAnagrams(word, "", dict, words);
+    return words;
+  }
+
+  private static void getAnagrams(String word, String newAnagram, LookupList dict, List<String> groups) {
+
+    if (word.length() == 0) {
+      newAnagram = newAnagram.toUpperCase();
+      if (dict.contains(newAnagram)) {
+        if (!groups.contains(newAnagram)) {
+          groups.add(newAnagram);
+        }
+      }
+    }
+    else {
+      for (int i = 0; i < word.length(); i++) {
+        getAnagrams(word.substring(0, i) + word.substring(i+1),
+                newAnagram + word.charAt(i), dict, groups);
+      }
+    }
   }
 
   public static void main(String[] args) throws FileNotFoundException {
